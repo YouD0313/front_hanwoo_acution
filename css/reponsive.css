@@ -70,6 +70,7 @@ body {
 .title {
 	display: flex;
 	align-items: center;
+	justify-content: space-around;
 	top: 0;
 	width: 100%;
 	line-height: 7.42vh;
@@ -96,20 +97,21 @@ body {
 	flex-wrap: nowrap;
 	font-size: 2vh;
 }
+.flexDiv {
+	display: flex;
+	justify-content: space-around;
+}
 #auctionCount {
 	font-size: 2.5vh;
 }
 .sound-icon {
-	display: flex;
-	position: absolute;
-	/* top: 50%; */
-	/* transform: translateY(-50%); */
 	right: 5px;
 	width: 17px;
 	height: 15px;
+	margin: 20px 3px;
 	background: url(../../img/sound.png) no-repeat 0 -15px;
 }
-.msg {
+/* .msg {
 	position: relative;
 	width: 100%;
 	line-height: 7.42vh;
@@ -123,12 +125,13 @@ body {
 	padding: 0 0 0 7px;
 	font-weight: 700;
 	color: rgb(253, 143, 0);
-}
+} */
 .count-circle {
+	content: '';
 	width: 11px;
 	height: 11px;
 	border-radius: 50%;
-	margin: 0 3px;
+	margin: 20px 3px;
 	background: rgb(177, 177, 177);
 }
 
