@@ -1,0 +1,1277 @@
+<html>
+	<head>
+		<meta
+			name="viewport"
+			content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"
+		/>
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="stylesheet" type="text/css" href="css/reponsive.css" />
+		<link rel="stylesheet" type="text/css" href="css/sideBar.css" />
+		<link rel="stylesheet" type="text/css" href="css/slide.css" />
+		<script src="./js/jquery-3.5.1.min.js"></script>
+		<script
+			type="text/javascript"
+			src="http://www.xn--289al3w02jixo.kr:8001/socket.io/socket.io.js"
+		></script>
+		<script
+			type="text/javascript"
+			src="nstreamPlayer.php?tid=1673830302"
+		></script>
+		<link href="icon.png" rel="apple-touch-icon" />
+		<script type="application/javascript">
+			document.addEventListener('touchstart', function () {}, false);
+		</script>
+		<title>스마트 한우경매 &gt; 응찰</title>
+		<style>
+			@media (orientation: portrait) {
+				.cow {
+					width: 90%;
+					font-size: 3.1vh;
+				}
+				#side-canvas,
+				#front-canvas {
+					height: 220px;
+				}
+			}
+			@media (orientation: landscape) {
+				.cow {
+					width: 90%;
+					font-size: 25px;
+				}
+				#side-canvas,
+				#front-canvas {
+					height: 320px;
+				}
+			}
+			.live {
+				width: 100%;
+				background: black;
+			}
+			#side-canvas,
+			#front-canvas {
+				width: 100%;
+				background: black;
+			}
+			#canvasContainer1,
+			#canvasContainer2 {
+				background: black;
+			}
+
+			.zzimbtn {
+				width: 70px;
+				font-size: 20px;
+				line-height: 50px;
+				padding: 0 7px;
+				font-weight: 700;
+				color: rgb(36, 149, 255);
+				border: rgb(45, 101, 153) 1px solid;
+				border-radius: 3px;
+				background: rgb(27, 27, 27);
+				position: relative;
+				left: 0px;
+			}
+		</style>
+	</head>
+
+	<body
+		oncontextmenu="return false"
+		ondragstart="return false"
+		onselectstart="return false"
+	>
+		<div class="container">
+			<div class="head">
+				<div class="title">
+					<span class="item">
+						<input type="checkbox" id="menuicon" />
+						<label for="menuicon" onclick="menuEvent();">
+							<span style="background-color: #f5f5f4"></span>
+							<span style="background-color: #f5f5f4"></span>
+							<span style="background-color: #f5f5f4"></span>
+						</label>
+						<nav>
+							<div class="sidebar" id="sidebarDiv">
+								<div class="sidebar-top">
+									<span onclick="logoutFunc();">로그아웃</span
+									><a href="index.html"
+										><span
+											style="color: #f5f5f4; font-size: 12pt; font-weight: 600"
+											>HOME</span
+										></a
+									>
+								</div>
+								<ul>
+									<li style="height: 53px; color: #f5f5f4; font-weight: 600">
+										<a
+											href="#"
+											onclick="alert('1월 19일(목)에 혈통송아지 경매가 있습니다.');"
+											>경매관전</a
+										>
+									</li>
+									<li style="height: 53px; font-weight: 600">
+										<a
+											href="#"
+											onclick="alert('1월 19일(목)에 혈통송아지 경매가 있습니다.');"
+											>경매응찰</a
+										>
+									</li>
+
+									<li style="height: 53px; font-weight: 600">
+										<a href="auction_plan.html?code=14">출장우 상세정보</a>
+									</li>
+									<li style="height: 53px; font-weight: 600">
+										<a href="auction_result.html?code=14">경매결과조회</a>
+									</li>
+									<li style="height: 53px; font-weight: 600">
+										<a href="auction_bid_list.html?code=14">나의 응찰내역</a>
+									</li>
+
+									<li style="height: 53px; font-weight: 600">
+										<a href="purchase_list.html?code=14">나의 구매내역</a>
+									</li>
+
+									<li style="height: 53px; font-weight: 600">
+										<a href="login.html?rURL=7&amp;code=14">나의 출장우조회</a>
+									</li>
+									<li
+										style="height: 53px; font-weight: 600"
+										onclick="location.href='auction_sch.html?code=14';"
+									>
+										<a href="auction_sch.html?code=14">일정안내</a>
+									</li>
+								</ul>
+								<div class="sidebar-bottom">
+									<a href="auction_manual.html?code=14"
+										><span style="font-size: 14pt; font-weight: 600"
+											>이용가이드</span
+										></a
+									>
+									<a href="notice.html?code=14"
+										><span style="font-size: 14pt; font-weight: 600"
+											>공지사항</span
+										></a
+									>
+								</div>
+							</div>
+							<label for="menuicon">
+								<div class="sidebar-bg" onclick=""></div>
+							</label>
+						</nav>
+						<script>
+							function logoutFunc() {
+								location.href = 'userLogout.php';
+							}
+
+							var menuLoop = 0;
+							var sid = '';
+
+							function menuEvent() {
+								menuLoop = 1;
+								clearInterval(sid);
+							}
+
+							setTimeout(function () {
+								//아이폰
+
+								$("input:checkbox[id='menuicon']").prop('checked', false);
+							}, 500);
+
+							setTimeout(function () {
+								$("input:checkbox[id='menuicon']").prop('checked', false);
+
+								clearInterval(sid);
+							}, 1000);
+
+							var userAgent = navigator.userAgent.toLowerCase();
+							var Android = userAgent.indexOf('android') > -1;
+
+							if (Android) {
+								sid = setInterval(function () {
+									$("input:checkbox[id='menuicon']").prop('checked', false);
+								}, 50);
+							}
+						</script>
+					</span>
+					<div class="flexDiv" style="display: flex">
+						<span
+							id="auctionReady"
+							style="display: none; color: rgb(204, 255, 0)"
+							>Loading...</span
+						>
+						<span
+							id="auctionCount"
+							style="display: flex; color: rgb(204, 255, 0)"
+							>경매마감
+							<span style="color: white; font-size: 3.1vh">0</span>초전
+							&nbsp;&nbsp; <span class="count-circle"></span
+							><span class="count-circle"></span
+							><span class="count-circle"></span
+						></span>
+						<!-- <span class="item" style="font-size: 2.3vh; color: #f5f5f4"
+                            >합천축협 스마트경매</span
+                        > -->
+						<span class="item" style="color: #f5f5f4">
+							참가번호 38 &nbsp;
+						</span>
+						<span
+							class="sound-icon"
+							id="sound-icon"
+							style="left: 93vw; background-position: 0px 0px"
+						></span>
+					</div>
+				</div>
+				<div class="msg">
+					<!-- <span id="auctionReady" style="display: none; color: rgb(204, 255, 0)"
+						>Loading...</span
+					>
+					<span
+						id="auctionCount"
+						style="display: block; color: rgb(204, 255, 0)"
+						>경매마감 <span style="color: white; font-size: 3.1vh">0</span>초전
+						&nbsp;&nbsp; <span class="count-circle"></span
+						><span class="count-circle"></span><span class="count-circle"></span
+					></span> -->
+					<span id="auctionResult" style="display: none; color: #ccff00"></span>
+					<span
+						id="auctionSuccess"
+						style="display: none; color: #ccff00"
+					></span>
+				</div>
+
+				<!-- 영상 슬라이드 추가부분 시작 -->
+				<div class="section">
+					<input type="radio" name="slide" id="slide01" checked="" />
+					<input type="radio" name="slide" id="slide02" />
+					<input type="radio" name="slide" id="slide03" />
+					<div class="slidewrap">
+						<ul class="slidelist">
+							<!-- 슬라이드 영역 -->
+							<li class="slideitem">
+								<div class="cow" id="cow" style="height: 792px">
+									<div class="item">경매번호</div>
+									<div class="item" id="auctionNo">1</div>
+									<div class="item">출하주</div>
+									<div
+										class="item"
+										id="cattle_owner"
+										style="position: relative; left: -5px"
+									>
+										김*우
+									</div>
+									<div class="item">성별</div>
+									<div class="item" id="cattle_sex">수</div>
+									<div class="item">중량</div>
+									<div class="item" id="cattle_weight">230</div>
+									<div class="item">산차</div>
+									<div class="item" id="cattle_sancha">2</div>
+									<div class="item">어미</div>
+									<div class="item" id="cattle_mother_level">혈통</div>
+									<div class="item">계대</div>
+									<div class="item" id="cattle_age">6</div>
+									<div class="item">KPN</div>
+									<div class="item" id="cattle_father_kpn">1368</div>
+									<div class="item">최저가</div>
+									<div class="item" id="auction_lowest_price">250</div>
+									<div class="item">비고</div>
+									<div class="item">
+										<marquee
+											behavior="scroll"
+											scrollamount="4"
+											direction="left"
+											style="15vw"
+											id="auction_remark"
+										></marquee>
+									</div>
+								</div>
+							</li>
+							<li class="slideitem">
+								<a> </a>
+								<div
+									class="live"
+									style="relative;background:#000000;color:#999999"
+								>
+									<a>
+										<div
+											id="canvasContainer1"
+											style="
+												position: relative;
+												top: 0px;
+												background: rgb(0, 0, 0);
+												height: 792px;
+											"
+										>
+											<canvas
+												id="front-canvas"
+												style="
+													width: 100%;
+													height: 100%;
+													position: relative;
+													z-index: 0;
+													background: #000000;
+												"
+												width="640"
+												height="360"
+											></canvas>
+										</div>
+									</a>
+								</div>
+							</li>
+							<li class="slideitem">
+								<a>
+									<div
+										class="live"
+										style="relative;background:#000000;color:#999999"
+									>
+										<div
+											id="canvasContainer2"
+											style="
+												position: relative;
+												top: 0px;
+												background: rgb(0, 0, 0);
+												height: 792px;
+											"
+										>
+											<canvas
+												id="side-canvas"
+												style="
+													width: 100%;
+													height: 100%;
+													position: relative;
+													z-index: 0;
+													background: #000000;
+												"
+											></canvas>
+										</div>
+									</div>
+								</a>
+							</li>
+
+							<!-- 좌,우 슬라이드 버튼 -->
+							<div class="slide-control">
+								<div>
+									<!-- <label for="slide03" class="left"></label> -->
+									<label
+										for="slide02"
+										class="right"
+										onclick="slideFunc(2);"
+									></label>
+								</div>
+								<div>
+									<label
+										for="slide01"
+										class="left"
+										onclick="slideFunc(1);"
+									></label>
+									<label
+										for="slide03"
+										class="right"
+										onclick="slideFunc(3);"
+									></label>
+								</div>
+								<div>
+									<label for="slide02" class="left"></label>
+								</div>
+							</div>
+						</ul>
+					</div>
+				</div>
+				<!-- 영상 슬라이드 추가부분 끝 -->
+			</div>
+			<div class="content">
+				<div class="bid">
+					<ul>
+						<li>
+							<div class="price">
+								<div
+									class="item"
+									style="
+										width: 150px;
+										font-size: 3.8vh;
+										color: rgb(255, 153, 0);
+									"
+								>
+									&nbsp; 응찰금액
+									<span
+										id="zzimShow"
+										style="position: relative; left: 50px"
+									></span>
+								</div>
+								<div class="item">
+									&nbsp;
+									<input
+										type="text"
+										id="requestNum_input"
+										style="
+											border: none;
+											background: transparent;
+											width: 32vw;
+											text-align: right;
+											font-size: 6.45vh;
+											color: rgb(255, 255, 255);
+										"
+										onfocus="this.blur()"
+										value="0"
+										readonly=""
+									/>
+								</div>
+								<div
+									class="item"
+									style="font-size: 3.8vh; color: rgb(255, 153, 0)"
+								>
+									만원 &nbsp;
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="numKeypad">
+				<div class="calc">
+					<table>
+						<tbody>
+							<tr>
+								<td id="numberTable_1" style="color: #ffffff">1</td>
+								<td id="numberTable_2" style="color: #ffffff">2</td>
+								<td id="numberTable_3" style="color: #ffffff">3</td>
+								<td rowspan="4" class="bidBtn" id="numberTable_ok">응찰</td>
+							</tr>
+							<tr>
+								<td id="numberTable_4" style="color: #ffffff">4</td>
+								<td id="numberTable_5" style="color: #ffffff">5</td>
+								<td id="numberTable_6" style="color: #ffffff">6</td>
+							</tr>
+							<tr>
+								<td id="numberTable_7" style="color: #ffffff">7</td>
+								<td id="numberTable_8" style="color: #ffffff">8</td>
+								<td id="numberTable_9" style="color: #ffffff">9</td>
+							</tr>
+							<tr>
+								<td class="cancelBtn" id="numberTable_reset">취소</td>
+								<td colspan="2" id="numberTable_0" style="color: #ffffff">0</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="sidebar-bg">
+			<audio id="timer-start" playsinline="" style="width: 0; height: 0">
+				<source src="./sound/start.mp3" type="audio/mp3" /></audio
+			><audio id="timer-beep" playsinline="" style="width: 0; height: 0">
+				<source src="./sound/ding.mp3" type="audio/mp3" /></audio
+			><canvas
+				id="audio-canvas"
+				style="
+					width: 1%;
+					height: 1px;
+					position: relative;
+					z-index: 0;
+					background: #000000;
+				"
+			></canvas>
+		</div>
+
+		<script>
+			var check = 0;
+
+			var sicon = document.getElementById('sound-icon');
+
+			sicon.addEventListener('click', function () {
+				if (check == 0) {
+					audio_player.volume = 0;
+
+					sicon.style.backgroundPosition = '0 0';
+
+					document.getElementById('timer-beep').volume = 0;
+
+					check = 1;
+				} else {
+					audio_player.volume = 1;
+					sicon.style.backgroundPosition = '0 -15px';
+					check = 0;
+
+					document.getElementById('timer-beep').volume = 1;
+				}
+			});
+		</script>
+		<script>
+			var startKey = 0;
+			var countKey = 1;
+			var sec = 0;
+			var controlKey = 0;
+			var resultKey = 0;
+			var endKey = 0;
+
+			var lastAuctionNumber = 0;
+			var currentAuctionNumber = 0;
+
+			var auctionNumber_data = '';
+			var cowItem_data = '';
+			var countNumber_data = '';
+			var auctionStat_data = '';
+			var auctionDate_data = '';
+			var requestNumStat = 0;
+
+			var auctionKeyArray = '';
+			var reStartMark = 0;
+			var inner_socketTime;
+			var lastSocketTime = '';
+			var currentSocketTime = '';
+			var allowAjax = 0;
+
+			var socket = io.connect('http://www.xn--289al3w02jixo.kr:8001');
+			socket.on('notification', function (data) {
+				$.each(data.client, function (index, manager) {
+					auctionNumber_data = manager.auctionNumber;
+					cowItem_data = manager.cowItem;
+					countNumber_data = manager.countNumber;
+					auctionStat_data = manager.stat;
+					auctionDate_data = manager.regDate;
+					inner_socketTime = manager.socketTime;
+				});
+
+				//DB업데이트만 AJAX 를 호출
+				currentSocketTime = inner_socketTime;
+
+				if (lastSocketTime != currentSocketTime) {
+					lastSocketTime = inner_socketTime;
+					allowAjax = 1;
+				}
+
+				// 낙찰상태가 변하는지에 따라 소켓통신을 계속 받을지 판단
+
+				if (startKey == 0) {
+					if (lastAuctionNumber != currentAuctionNumber) {
+						// 응찰금액을 초기화
+						// $("#requestNum_input").val("0");
+						if (zzim == 0) {
+							$('#requestNum_input').css('color', 'rgb(255, 255, 255)');
+						} else {
+							$('#requestNum_input').css('color', 'rgb(204, 255, 0)');
+						}
+						initNum = parseInt(0);
+
+						startKey = 1; // 금액을 0으로 조정
+					}
+				}
+
+				if (auctionStat_data == '3') {
+					//유찰시에 금액 초기화
+
+					if (reStartMark == 0) {
+						//유찰시 금액 초기화
+
+						//응찰버튼 초기화
+						$('#numberTable_ok').css('color', '#ffffff');
+						$('#requestNum_input').val('0');
+
+						initNum = parseInt(0);
+
+						reStartMark = 1;
+					}
+				}
+
+				currentAuctionNumber = auctionNumber_data;
+
+				controlKey = 1;
+				countKey = 1;
+				resultKey = 0;
+				endKey = 0;
+
+				// 소켓의 변화에 따라 AJAX 구동
+
+				if (allowAjax == 1) {
+					var tmp_arrange = new Date();
+					var tid = tmp_arrange.getTime();
+
+					var url =
+						'getAuctionData_device.php?auctionDate=' +
+						auctionDate_data +
+						'&auctionMode=' +
+						cowItem_data +
+						'&auctionNo=' +
+						auctionNumber_data +
+						'&tid=' +
+						tid;
+
+					if (window.XMLHttpRequest) {
+						auc_req = new XMLHttpRequest();
+						try {
+							auc_req.onreadystatechange = auctionStartResult;
+							auc_req.open('GET', url, true);
+							auc_req.send(null);
+						} catch (e) {}
+					} else if (window.ActiveXObject) {
+						auc_req = new ActiveXObject('Microsoft.XMLHTTP');
+
+						if (auc_req) {
+							auc_req.onreadystatechange = auctionStartResult;
+							auc_req.open('GET', url, true);
+							auc_req.send();
+						}
+					}
+
+					allowAjax = 0;
+				}
+			});
+
+			var second_1 = 0;
+			var second_2 = 0;
+			var second_3 = 0;
+
+			var zzim = 0;
+
+			function auctionStartResult() {
+				if (auc_req.readyState == 4) {
+					if (auc_req.status == 200) {
+						if (auc_req.responseText != '') {
+							var dataArray = auc_req.responseText.split('=='); //구분함
+
+							//--경매번호,출하주,성별,중량,산차,어미,계대,KPN,최저가,비고
+
+							$('#auctionNo').html(dataArray[0]);
+							$('#cattle_owner').html(dataArray[1]);
+							$('#cattle_sex').html(dataArray[2]);
+							$('#cattle_weight').html(dataArray[3]);
+							$('#cattle_sancha').html(dataArray[4]);
+							$('#cattle_mother_level').html(dataArray[5]);
+							$('#cattle_age').html(dataArray[6]);
+							$('#cattle_father_kpn').html(dataArray[7]);
+							$('#auction_lowest_price').html(dataArray[8]);
+							if (dataArray[9] != 'nodata') {
+								$('#auction_remark').html(dataArray[9]);
+							} else {
+								$('#auction_remark').html('');
+							}
+
+							if (auctionStat_data == '1') {
+								//대기중
+
+								reStartMark = 0;
+								// --- 찜기능
+								if (dataArray[12] == '0') {
+									//찜 가격이 없을때
+									console.log('찜가격이 0일때');
+									// $("#requestNum_input").val("0");
+									$('#requestNum_input').css('color', 'rgb(255, 255, 255)');
+									$('#zzimShow').html('');
+									zzim = 0;
+								} else {
+									console.log('찜가격이 있을때' + dataArray[12]);
+									//- 찜 박스 표기
+									$('#zzimShow').html('<span class=zzimbtn>찜</span>');
+									//<div class="bidBtn"
+
+									$('#requestNum_input').css('color', 'rgb(204, 255, 0)');
+									$('#requestNum_input').val(dataArray[12]);
+									zzim = 1;
+								}
+
+								$('#auctionReady').css('display', 'none');
+
+								if (countNumber_data == 3) {
+									if (second_3 == 0) {
+										second_3 = 1;
+									}
+									$('#auctionCount').html(
+										"경매마감 <span style='color:white;font-size:3.1vh'>" +
+											countNumber_data +
+											"</span>초전 &nbsp;&nbsp; <span class=count-circle style='background:red'></span><span class=count-circle style='background:red'></span><span class=count-circle style='background:red'></span>"
+									);
+								}
+								if (countNumber_data == 2) {
+									if (second_2 == 0) {
+										second_2 = 1;
+									}
+									// 타이머 효과
+									$('#auctionCount').html(
+										"경매마감 <span style='color:white;font-size:3.1vh'>" +
+											countNumber_data +
+											"</span>초전 &nbsp;&nbsp; <span class=count-circle style='background:red'></span><span class=count-circle style='background:red'></span><span class=count-circle></span>"
+									);
+								}
+								if (countNumber_data == 1) {
+									if (second_1 == 0) {
+										second_1 = 1;
+									}
+									// 타이머 효과
+									$('#auctionCount').html(
+										"경매마감 <span style='color:white;font-size:3.1vh'>" +
+											countNumber_data +
+											"</span>초전 &nbsp;&nbsp; <span class=count-circle style='background:red'></span><span class=count-circle></span><span class=count-circle></span>"
+									);
+								}
+								if (countNumber_data == 0) {
+									if (second_1 == 0) {
+										second_1 = 1;
+									}
+									// 타이머 효과
+									$('#auctionCount').html(
+										"경매마감 <span style='color:white;font-size:3.1vh'>" +
+											countNumber_data +
+											'</span>초전 &nbsp;&nbsp; <span class=count-circle></span><span class=count-circle></span><span class=count-circle></span>'
+									);
+								}
+
+								$('#auctionCount').css('display', 'block');
+								$('#auctionResult').css('display', 'none');
+								$('#auctionSuccess').css('display', 'none');
+							}
+
+							if (auctionStat_data == '2') {
+								//낙찰
+
+								numInitData = 0;
+
+								second_1 = 0;
+								second_2 = 0;
+								second_3 = 0;
+
+								reStartMark = 0;
+
+								if (startKey == 1) {
+									lastAuctionNumber = dataArray[0];
+									startKey = 0;
+								}
+
+								if (dataArray[11] == 38) {
+									//자신이 낙찰
+									var selfConfirm = '<font color=FF3366><b>낙찰됨</b></font> ';
+								} else {
+									var selfConfirm = '';
+								}
+
+								//응찰버튼 초기화
+								$('#numberTable_ok').css('color', '#ffffff');
+								$('#numberTable_ok').css('background', 'dodgerblue');
+
+								console.log('찜가격 결과값이 낙찰일때');
+
+								$('#requestNum_input').css('color', 'rgb(255, 255, 255)');
+								$('#requestNum_input').val('0');
+
+								$('#auctionReady').css('display', 'none');
+								$('#auctionCount').css('display', 'none');
+								$('#auctionResult').html(
+									"<span class=msg-text style='color:#CCFF00;'><span style='color:#ffffff'>" +
+										selfConfirm +
+										'낙찰금액</span>&nbsp;' +
+										dataArray[10] +
+										"<span style='color:#ffffff'>낙찰자</span>&nbsp; <font color='red'>" +
+										dataArray[11] +
+										'</font>'
+								);
+								$('#auctionResult').css('display', 'block');
+								$('#auctionSuccess').css('display', 'none');
+							}
+							if (auctionStat_data == '3') {
+								//유찰
+
+								numInitData = 0;
+
+								second_1 = 0;
+								second_2 = 0;
+								second_3 = 0;
+
+								if (startKey == 1) {
+									lastAuctionNumber = dataArray[0];
+									startKey = 0;
+								}
+
+								$('#auctionReady').html(
+									'경매 <font color=CCFF00>대기</font>중 입니다.'
+								);
+								$('#auctionReady').css('display', 'block');
+								$('#auctionCount').css('display', 'none');
+								$('#auctionResult').css('display', 'none');
+								$('#auctionSuccess').css('display', 'none');
+
+								$('#numberTable_ok').css('color', '#ffffff');
+								$('#numberTable_ok').css('background', 'dodgerblue');
+							}
+
+							if (auctionStat_data == '4') {
+								//보류
+
+								numInitData = 0;
+
+								//응찰버튼 초기화
+								$('#numberTable_ok').css('color', '#ffffff');
+								$('#numberTable_ok').css('background', 'dodgerblue');
+
+								$('#requestNum_input').val('0');
+
+								$('#auctionReady').html('경매가 보류되었습니다.');
+								$('#auctionReady').css('display', 'block');
+								$('#auctionCount').css('display', 'none');
+								$('#auctionResult').css('display', 'none');
+								$('#auctionSuccess').css('display', 'none');
+							}
+						}
+					}
+				}
+			}
+
+			// 색상복원
+			function cellRecover(t) {
+				if (t == 'reset') {
+					$('#numberTable_reset').css('background', 'rgb(22, 22, 22)');
+				} else {
+					$('#numberTable_' + t).css('background', 'rgb(22, 22, 22)');
+				}
+			}
+
+			var initNum = 0;
+
+			function numExc(t) {
+				$('#requestNum_input').css('color', 'rgb(255, 255, 255)');
+
+				if (t == 'reset') {
+					$('#numberTable_ok').css('background', 'dodgerblue');
+
+					var userAgent = navigator.userAgent.toLowerCase();
+					var Android = userAgent.indexOf('android') > -1; //안드로이드만 진동이 됨
+
+					if (Android) {
+						window.navigator.vibrate(200);
+					}
+
+					$('#requestNum_input').val('0');
+					initNum = parseInt(0);
+
+					//원래 색상
+					$('#numberTable_ok').css('color', '#ffffff');
+
+					//모든 경매 삭제
+					var tmp_arrange = new Date();
+					var tid = tmp_arrange.getTime();
+
+					var bid_price = '0';
+					var entry_code = '38';
+
+					var url =
+						'setBidding_device.php?auctionDate=' +
+						auctionDate_data +
+						'&auctionMode=' +
+						cowItem_data +
+						'&auctionNo=' +
+						auctionNumber_data +
+						'&entryCode=' +
+						entry_code +
+						'&bidPrice=' +
+						bid_price +
+						'&tid=' +
+						tid;
+
+					if (window.XMLHttpRequest) {
+						data_req = new XMLHttpRequest();
+						try {
+							data_req.onreadystatechange = dataTransferResult;
+							data_req.open('GET', url, true);
+							data_req.send(null);
+						} catch (e) {}
+					} else if (window.ActiveXObject) {
+						data_req = new ActiveXObject('Microsoft.XMLHTTP');
+
+						if (data_req) {
+							data_req.onreadystatechange = dataTransferResult;
+							data_req.open('GET', url, true);
+							data_req.send();
+						}
+					}
+					return;
+				}
+
+				if (t == 'ok') {
+					var bid_price = $('#requestNum_input').val();
+					// 각 경매모드의 상한가를 입력할 경우 confirm 창을 활용한다
+
+					if (bid_price > highPriceLimit) {
+						var confirmCompare = confirm(
+							'상한가 금액을 초과하셨습니다. 이 금액으로 응찰하시겠습니까?'
+						);
+
+						if (confirmCompare == true) {
+						} else if (confirmCompare == false) {
+							return false;
+						}
+					}
+
+					var userAgent = navigator.userAgent.toLowerCase();
+					var Android = userAgent.indexOf('android') > -1; //안드로이드만 진동이 됨
+
+					if (Android) {
+						window.navigator.vibrate(200);
+					}
+
+					var tmp_arrange = new Date();
+					var tid = tmp_arrange.getTime();
+
+					var entry_code = '38';
+
+					var url =
+						'setBidding_device.php?auctionDate=' +
+						auctionDate_data +
+						'&auctionMode=' +
+						cowItem_data +
+						'&auctionNo=' +
+						auctionNumber_data +
+						'&entryCode=' +
+						entry_code +
+						'&bidPrice=' +
+						bid_price +
+						'&tid=' +
+						tid;
+
+					if (window.XMLHttpRequest) {
+						data_req = new XMLHttpRequest();
+						try {
+							data_req.onreadystatechange = dataTransferResult;
+							data_req.open('GET', url, true);
+							data_req.send(null);
+						} catch (e) {}
+					} else if (window.ActiveXObject) {
+						data_req = new ActiveXObject('Microsoft.XMLHTTP');
+
+						if (data_req) {
+							data_req.onreadystatechange = dataTransferResult;
+							data_req.open('GET', url, true);
+							data_req.send();
+						}
+					}
+				} else {
+					if (t == 'x') {
+						initNum.toString();
+
+						if (initNum.toString().length == 1) {
+							//1의자리라면 0 입력
+							$('#requestNum_input').val('0');
+							initNum = parseInt(0);
+							return false;
+						}
+						if (initNum.toString().length == 2) {
+							//2의자리라면 10의 자리중 일의 자리만 삭제하고 남김
+							initNum = parseInt(initNum.toString().substring(0, 1));
+							$('#requestNum_input').val(initNum.toString());
+							return false;
+						}
+						if (initNum.toString().length == 3) {
+							//3의자리라면 10의 자리중 일의 자리만 삭제하고 남김
+							initNum = parseInt(initNum.toString().substring(0, 2));
+							$('#requestNum_input').val(initNum.toString());
+							return false;
+						}
+					} else {
+						if (numInitData == 1) {
+							//응찰후 초기화
+							//$("#requestNum_input").val("0");
+							initNum = 0;
+
+							console.log('키보드 디버깅----------------------:' + numInitData);
+
+							//응찰버튼 초기화
+							$('#numberTable_ok').css('color', '#ffffff');
+							$('#numberTable_ok').css('background', 'dodgerblue');
+							numInitData = 0;
+						}
+
+						if (initNum == 0) {
+							// 처음
+							initNum = parseInt(t);
+							$('#requestNum_input').val(initNum.toString());
+							return false;
+						} else {
+							if (initNum.toString().length == 1) {
+								// 1의 자리 존재시
+								initNum = parseInt(initNum * 10) + parseInt(t);
+								$('#requestNum_input').val(initNum.toString());
+								return false;
+							}
+							if (initNum.toString().length == 2) {
+								// 10의 자리 존재시
+								initNum = parseInt(initNum * 10) + parseInt(t);
+								$('#requestNum_input').val(initNum.toString());
+
+								return false;
+							}
+							if (initNum.toString().length == 3) {
+								// 100의 자리 존재시
+								initNum = parseInt(initNum * 10) + parseInt(t);
+								$('#requestNum_input').val(initNum.toString());
+
+								return false;
+							}
+						}
+					}
+				}
+			}
+
+			//---------- 응찰 결과-----------------
+			var numInitData = 0;
+
+			function dataTransferResult() {
+				if (data_req.readyState == 4) {
+					if (data_req.status == 200) {
+						if (data_req.responseText.indexOf('ok') != -1) {
+							// 실제 경매가 이루어진경우
+							$('#numberTable_ok').css(
+								'background',
+								'linear-gradient(180deg, rgb(35,35,35) 10%, rgb(25,25,25) 50%)'
+							);
+							$('#numberTable_ok').css('color', '#ff9900');
+
+							console.log(
+								'낙찰했을경우:' + $('#numberTable_ok').css('background')
+							);
+
+							//---응찰이 성공한 이후에는 var 을 초기화한다
+
+							numInitData = 1;
+
+							// dodgerblue
+						} else {
+							//취소를 눌렀을 경우
+							$('#numberTable_ok').css('background', 'dodgerblue');
+							$('#numberTable_ok').css('color', '#ffffff');
+						}
+					}
+				}
+			}
+		</script>
+		<style>
+			#video-canvas {
+				background-color: #000000;
+			}
+
+			.live {
+				width: 100%;
+				height: auto;
+				position: relative;
+			}
+		</style>
+		<script>
+			$(document).ready(function () {
+				setTimeout('highLimitFunc()', 1000); //상한가 불러오기
+
+				//--오디오 기본 무음
+				audio_player.volume = 0;
+				sicon.style.backgroundPosition = '0 0';
+				document.getElementById('timer-beep').volume = 0;
+				check = 1;
+			});
+
+			var highPriceLimit = 0;
+
+			function highLimitFunc() {
+				var tmp_arrange = new Date();
+				var tid = tmp_arrange.getTime();
+
+				var url =
+					'getHighLimit.php?auctionDate=' +
+					auctionDate_data +
+					'&auctionMode=' +
+					cowItem_data +
+					'&tid=' +
+					tid;
+
+				if (window.XMLHttpRequest) {
+					high_req = new XMLHttpRequest();
+					try {
+						high_req.onreadystatechange = highLimitResult;
+						high_req.open('GET', url, true);
+						high_req.send(null);
+					} catch (e) {}
+				} else if (window.ActiveXObject) {
+					high_req = new ActiveXObject('Microsoft.XMLHTTP');
+
+					if (high_req) {
+						high_req.onreadystatechange = highLimitResult;
+						high_req.open('GET', url, true);
+						high_req.send();
+					}
+				}
+			}
+
+			//--상한가 결과
+			function highLimitResult() {
+				if (high_req.readyState == 4) {
+					if (high_req.status == 200) {
+						if (high_req.responseText != '') {
+							highPriceLimit = parseInt(high_req.responseText);
+						}
+					}
+				}
+			}
+		</script>
+		<script type="text/javascript">
+			var initPlayer = 0;
+			var player = '';
+
+			var preCam = '1'; //페이지 로드시 1번
+
+			var canvas_front;
+			var url_front;
+			var player_front = '';
+
+			var canvas_side;
+			var url_side;
+			var player_side = '';
+
+			var canvas_outer;
+			var url_outer;
+			var player_outer = '';
+
+			function slideFunc(t) {
+				if (t == 1) {
+					//--경매데이타 출력
+
+					//--나머지는 모두 pause
+					if (player_front != '') {
+						player_front.pause();
+					}
+				}
+
+				if (t == 2) {
+					//-- front 영상 활성화 나머지는 모두 pause
+
+					//---front camera
+					canvas_front = document.getElementById('front-canvas');
+					url_front = 'ws://112.216.80.107:9000/';
+					player_front = new nStream.Player(url_front, {
+						canvas: canvas_front,
+						disableWebAssembly: false,
+					});
+
+					document.body.addEventListener('touchstart', function () {
+						var userAgent = navigator.userAgent.toLowerCase();
+						var Android = userAgent.indexOf('android') > -1;
+
+						if (Android) {
+						} else {
+							player_front.audioOut.unlock(function () {});
+						}
+					});
+
+					//-- side 영상플레이
+					player_front.play();
+
+					//--나머지는 모두 pause
+					if (player_side != '') {
+						player_side.pause();
+					}
+				}
+				if (t == 3) {
+					//-- side 영상 활성화 나머지는 모두 pause
+
+					//---side camera
+					canvas_side = document.getElementById('side-canvas');
+					url_side = 'ws://112.216.80.107:9001/';
+					player_side = new nStream.Player(url_side, {
+						canvas: canvas_side,
+						disableWebAssembly: false,
+					});
+
+					document.body.addEventListener('touchstart', function () {
+						var userAgent = navigator.userAgent.toLowerCase();
+						var Android = userAgent.indexOf('android') > -1;
+
+						if (Android) {
+						} else {
+							player_side.audioOut.unlock(function () {});
+						}
+					});
+
+					//-- side 영상플레이
+					player_side.play();
+
+					//--나머지는 모두 pause
+					if (player_front != '') {
+						player_front.pause();
+					}
+				}
+			}
+
+			var check = 0;
+
+			//--- 오디오 on/off
+			var audio_canvas = document.getElementById('audio-canvas');
+			var audio_url = 'ws://112.216.80.107:9003/';
+			var audio_player = new nStream.Player(audio_url, {
+				audio_canvas: audio_canvas,
+				disableWebAssembly: false,
+			});
+
+			document.body.addEventListener('touchstart', function () {
+				var userAgent = navigator.userAgent.toLowerCase();
+				var Android = userAgent.indexOf('android') > -1;
+
+				if (Android) {
+				} else {
+					audio_player.audioOut.unlock(function () {});
+				}
+			});
+
+			// touch event
+
+			var number_1 = document.getElementById('numberTable_1');
+			number_1.addEventListener('touchstart', () => numExc('1'), false);
+
+			var number_2 = document.getElementById('numberTable_2');
+			number_2.addEventListener('touchstart', () => numExc('2'), false);
+
+			var number_3 = document.getElementById('numberTable_3');
+			number_3.addEventListener('touchstart', () => numExc('3'), false);
+
+			var number_4 = document.getElementById('numberTable_4');
+			number_4.addEventListener('touchstart', () => numExc('4'), false);
+
+			var number_5 = document.getElementById('numberTable_5');
+			number_5.addEventListener('touchstart', () => numExc('5'), false);
+
+			var number_6 = document.getElementById('numberTable_6');
+			number_6.addEventListener('touchstart', () => numExc('6'), false);
+
+			var number_7 = document.getElementById('numberTable_7');
+			number_7.addEventListener('touchstart', () => numExc('7'), false);
+
+			var number_8 = document.getElementById('numberTable_8');
+			number_8.addEventListener('touchstart', () => numExc('8'), false);
+
+			var number_9 = document.getElementById('numberTable_9');
+			number_9.addEventListener('touchstart', () => numExc('9'), false);
+
+			var number_0 = document.getElementById('numberTable_0');
+			number_0.addEventListener('touchstart', () => numExc('0'), false);
+
+			var number_reset = document.getElementById('numberTable_reset');
+			number_reset.addEventListener('touchstart', () => numExc('reset'), false);
+
+			var number_ok = document.getElementById('numberTable_ok');
+			number_ok.addEventListener('touchstart', () => numExc('ok'), false);
+
+			document.addEventListener('DOMContentLoaded', function () {
+				var $cow = document.querySelector('.cow'),
+					$info = document.querySelector('.section'),
+					$slideHeight = $info.offsetHeight;
+
+				console.log($slideHeight);
+				$cow.style.height = ($slideHeight * 1.2).toFixed(0) + 'px';
+
+				$('#canvasContainer1').css('height', $cow.style.height);
+				$('#canvasContainer2').css('height', $cow.style.height);
+			});
+
+			var lastTouchEnd = 0;
+			document.documentElement.addEventListener(
+				'touchend',
+				function (event) {
+					var now = new Date().getTime();
+					if (now - lastTouchEnd <= 300) {
+						event.preventDefault();
+					}
+					lastTouchEnd = now;
+				},
+				false
+			);
+		</script>
+	</body>
+</html>
