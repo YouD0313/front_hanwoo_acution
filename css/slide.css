@@ -50,19 +50,29 @@
 .section input[id='slide03']:checked ~ .slidewrap .slidelist > li {
 	transform: translateX(-200%);
 }
-
+/* 슬릭 */
+.slidelist {
+	position: relative;
+}
 /* 醫????щ씪?대뱶 踰꾪듉 */
 .slide-control > div {
 	display: none;
 }
 .section .left {
-	background: url('../img/left01.png') left center / 50% no-repeat;
+	position: absolute;
+	top: 38%;
+	background: left center / 50% no-repeat;
 	opacity: 0.6;
 }
 .section .right {
+	position: absolute;
+	bottom: 55%;
 	right: 0;
-	background: url('../img/right01.png') right center / 50% no-repeat;
+	background: right center / 50% no-repeat;
 	opacity: 0.6;
+}
+.imgSize {
+	width: 60px;
 }
 .section
 	input[id='slide01']:checked
@@ -130,4 +140,48 @@
 	> li:nth-child(3)
 	> label {
 	background: rgb(200, 255, 0);
+}
+.slick-arrow {
+	z-index: 10;
+	background: 50%;
+	opacity: 0.6;
+	border: 0;
+}
+/* 슬릭 슬라이더 */
+.slider {
+	width: 40rem;
+}
+.slide img {
+	display: block;
+	/* width: 1280px;
+    height: 450px;   */
+}
+.slick-dots {
+	display: flex;
+	justify-content: center;
+	margin: 0;
+	padding: 1rem 0;
+	list-style-type: none;
+	top: 400px !important;
+	left: 600px !important;
+}
+.slick-dots.margin {
+	margin-bottom: 2rem;
+}
+.slick-dots li {
+	margin: 0 0.25rem;
+}
+.slick-dots button {
+	display: block;
+	width: 1rem;
+	height: 1rem;
+	padding: 0;
+	border: none;
+	border-radius: 100%;
+	background-color: #9e9e9e61;
+	text-indent: -9999px;
+	cursor: pointer;
+}
+.slick-dots li.slick-active button {
+	background-color: #fff;
 }
