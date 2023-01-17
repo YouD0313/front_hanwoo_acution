@@ -272,14 +272,8 @@ tr:first-child > td:nth-child(-n + 3):active {
 	position: relative;
 }
 
-.infoMore {
-	height: 2rem;
-	position: absolute;
-	bottom: calc(0% + 100%);
-	display: none;
-}
-
 .infoBasic,
+.infoMore,
 .infoMore.block {
 	width: 100%;
 	height: 100%;
@@ -291,15 +285,21 @@ tr:first-child > td:nth-child(-n + 3):active {
 	align-items: center;
 }
 
+.infoMore {
+	width: 100%;
+	height: 2rem;
+	position: absolute;
+	bottom: calc(0% + 100%);
+	opacity: 0;
+	transition: all 500ms ease-in-out;
+}
+
 .clickMore {
 	cursor: pointer;
 }
 
 .infoMore.block {
-	display: block;
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
+	opacity: 1;
 }
 
 .infoBold {
