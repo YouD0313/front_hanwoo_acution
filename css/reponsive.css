@@ -98,6 +98,7 @@ body {
 	font-size: 2vh;
 }
 .flexDiv {
+	width: 100%;
 	display: flex;
 	justify-content: space-around;
 }

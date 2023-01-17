@@ -166,7 +166,7 @@
 	list-style-type: none;
 	top: 400px !important;
 	left: 600px !important;
-	margin-bottom: 2rem;
+	/* margin-bottom: 2rem; */
 }
 .slick-dots li {
 	margin: 0 0.25rem;
