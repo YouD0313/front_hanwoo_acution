@@ -5,21 +5,12 @@ const slideItem = document.querySelectorAll('.slideitem');
 const slickDots = document.querySelector('.slick-dots');
 const arrowShowHide = document.querySelectorAll('[name="slide"]');
 const arrowLeft = document.querySelector('.left');
+const soundIcon = document.querySelector('#sound-icon');
 // const slidelist = document.querySelector('.slidelist');
 // console.log('slideItem.attributes[1].value', slideItem.attributes[1].value);
 
-// window.addEventListener('DOMContentLoaded', function () {
-// 	$(infoMore).hide();
-// });
-window.addEventListener('DOMContentLoaded', function () {
-	// const date = new Date();
-	// const milliseconds = date.getMilliseconds();
-	// console.log(date);
-	// console.log(milliseconds);
-	// for (let i = 0; i < 11; i++) {
-	// 	let opacityS = i / 10;
-	// 	console.log(opacityS);
-	// }
+soundIcon.addEventListener('click', function () {
+	soundIcon.classList.toggle('soundToggle');
 });
 
 clickMore.addEventListener('click', function () {

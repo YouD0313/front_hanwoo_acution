@@ -112,6 +112,9 @@ body {
 	margin: 20px 3px;
 	background: url(../img/sound.png) no-repeat 0 -15px;
 }
+#sound-icon.soundToggle {
+	background-position: 0 -15px !important;
+}
 /* .msg {
 	position: relative;
 	width: 100%;
