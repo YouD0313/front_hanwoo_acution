@@ -273,15 +273,16 @@ tr:first-child > td:nth-child(-n + 3):active {
 }
 
 .infoMore {
+	height: 2rem;
 	position: absolute;
-	top: -33px;
+	bottom: calc(0% + 100%);
 	display: none;
 }
 
 .infoBasic,
 .infoMore.block {
 	width: 100%;
-	height: 2rem;
+	height: 100%;
 	font-size: 1.3rem;
 	background-color: #faebd7;
 	padding: 1px 0;
