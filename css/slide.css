@@ -60,19 +60,21 @@
 }
 .section .left {
 	position: absolute;
-	top: 38%;
+	top: 50%;
+	transform: translateY(-50%);
 	background: left center / 50% no-repeat;
 	opacity: 0.6;
 }
 .section .right {
 	position: absolute;
-	bottom: 55%;
+	transform: translateY(50%);
+	bottom: 50%;
 	right: 0;
 	background: right center / 50% no-repeat;
 	opacity: 0.6;
 }
 .imgSize {
-	width: 60px;
+	width: 3.75rem;
 }
 .section
 	input[id='slide01']:checked
@@ -164,8 +166,6 @@
 	list-style-type: none;
 	top: 400px !important;
 	left: 600px !important;
-}
-.slick-dots.margin {
 	margin-bottom: 2rem;
 }
 .slick-dots li {

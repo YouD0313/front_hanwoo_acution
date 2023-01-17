@@ -285,7 +285,7 @@ tr:first-child > td:nth-child(-n + 3):active {
 	background-color: #faebd7;
 	padding: 1px 0;
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 	align-items: center;
 }
 
@@ -296,7 +296,7 @@ tr:first-child > td:nth-child(-n + 3):active {
 .infoMore.block {
 	display: block;
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 	align-items: center;
 }
 
